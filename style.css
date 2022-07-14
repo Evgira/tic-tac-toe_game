@@ -5,30 +5,30 @@
 }
 
 body {
-  background: linear-gradient(225deg, #ef9da8 0%, #ffdc 100%);
+  background: #1e293b;
   background-attachment: fixed;
 }
 
-h1 {
-  margin: 3rem;
+h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 2rem;
   text-align: center;
-  color: #414141;
+  color: #4ade80;
 }
 
 .main-container {
   display: grid;
   grid-template-columns: repeat(3, auto);
-  width: 70%;
-  height: 90hv;
+  width: 35%;
   grid-gap: 5px;
   margin: 0 auto;
-  background-color: #898989;
+  background-color: #475569;
 }
 
 .cell {
   width: 100%;
-  height: 10rem;
-  background-color: #dcd5d5;
+  height: 8rem;
+  background-color: #94a3b8;
 }
 
 .o {
@@ -45,6 +45,6 @@ h1 {
   background-position: center;
 }
 
-.hidden {
+/* .hidden {
   background-image: none;
-}
+} */
