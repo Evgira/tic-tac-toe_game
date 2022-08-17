@@ -1,59 +1,95 @@
-'use strict';
+"use strict";
 
-/*
-1. download img for 0 and X
-2. define 2 players
-3. have 1 btn: 
-   a) new game - set initial state
-4. a) player 1 clicks the box it gets 0, 
-   b) player 2 clicks it should always X then.
-   c) have a playing mode to true and false when there is a winner
-5. class, style for winner
-*/
+const x_class = 'x';
+const o_class = 'circle';
+const winningCombinations = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+];
+const cellElements = document.querySelectorAll('[data-cell]');
+const board = document.getElementById('board');
+const winningMessageElement = document.getElementById('winningMessage');
+const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
+const restartBtn = document.getElementById('restartButton');
+let circleTurn;
 
-const cellsArr = document.getElementsByClassName('.cell');
-console.log(cellsArr);
-const cell0 = document.querySelector('#cell0');
-const cell1 = document.querySelector('#cell1');
-const cell2 = document.querySelector('#cell2');
-const cell3 = document.querySelector('#cell3');
-const cell4 = document.querySelector('#cell4');
-const cell5 = document.querySelector('#cell5');
-const cell6 = document.querySelector('#cell6');
-const cell7 = document.querySelector('#cell7');
-const cell8 = document.querySelector('#cell8');
+startGame();
 
-cell8.classList.remove('hidden');
+restartBtn.addEventListener('click', startGame);
 
-let player1, player2;
-let playing = true;
+function startGame() {
+  circleTurn = false;
+  cellElements.forEach(cell => {
+    cell.classList.remove(x_class);
+    cell.classList.remove(o_class);
+    cell.removeEventListener('click', handleClick)
+    cell.addEventListener('click', handleClick, {once: true})
+  });
+  setBoardHoverClass();
+  winningMessageElement.classList.remove('show');
+}
 
-// cellsArr.addEventListener('click', function(e) {
+function handleClick(e) {
+  // check for draw
+  const cell = e.target;
+  const currentClass = circleTurn ? o_class : x_class;
+  // placeMark
+  placeMark(cell, currentClass)
+  // check for win
+  if(checkWin(currentClass)) {
+    endGame(false)
+  } else if(isDraw()) {
+    endGame(true)
+  } else {
+    // switch turns
+    swapTurns()
+    setBoardHoverClass()
+  }
+}
 
-// })
+function endGame(draw) {
+  if (draw) {
+    winningMessageTextElement.innerText = 'Draw!'
+  } else {
+    winningMessageTextElement.innerText = `${circleTurn ? "O's" : "X's"} Wins!`
+  }
+  winningMessageElement.classList.add('show');
+}
 
-// Starting the game
-//  if(cell0 === clickFromPlayer 1 ) {
-//     show X ;
-// } else {
-//     show O ;
-// }
+function isDraw() {
+  return [...cellElements].every(cell => {
+    return cell.classList.contains(x_class) || cell.classList.contains(o_class)
+   })
+}
 
-// Continue playing
-// if(cell0 === x) {
-//     the next cell should be 0
-// }
+function placeMark(cell, currentClass) {
+  cell.classList.add(currentClass)
+}
 
-// Winning conditions:
-/*  if(cell0 till cell2 clicked by the same player) {
-    the player wins;
-} else if (cell3 till cell5 clicked by the same player) {
-    player wins;
-} else if */
+function swapTurns() {
+  circleTurn = !circleTurn
+}
 
-// if(3 cells by hor, vert, diag clicked by the same player) {
-//     the same player wins
-// } else {
-//     nobody wins
-// }
+function setBoardHoverClass() {
+  board.classList.remove(x_class)
+  board.classList.remove(o_class)
+  if(circleTurn) {
+    board.classList.add(o_class)
+  } else {
+    board.classList.add(x_class)
+  }
+}
 
+function checkWin(currentClass) {
+  return winningCombinations.some(combination => {
+    return combination.every(index => {
+      return cellElements[index].classList.contains(currentClass)
+    })
+  })
+}
