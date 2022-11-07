@@ -23,7 +23,7 @@ h2 {
 
 .board {
   width: 100vw;
-  height: 100vh;
+  height: 55vh;
   display: grid;
   justify-content: center;
   align-content: start;
@@ -102,6 +102,15 @@ h2 {
   width: calc(var(--mark-size) * .7);
   height: calc(var(--mark-size) * .7);
   background-color: #94a3b8;
+}
+
+#resetButton {
+  width: 8rem;
+  display: block;
+  margin: auto;
+  font-size: 2rem;
+  border: 2px solid #4ade80;
+  cursor: pointer;
 }
 
 .winning-message {

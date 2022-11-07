@@ -17,13 +17,27 @@ const board = document.getElementById('board');
 const winningMessageElement = document.getElementById('winningMessage');
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
 const restartBtn = document.getElementById('restartButton');
+const resetBtn = document.getElementById('resetButton')
 let circleTurn;
 
 startGame();
 
 restartBtn.addEventListener('click', startGame);
+resetBtn.addEventListener('click', resetGame);
 
 function startGame() {
+  circleTurn = false;
+  cellElements.forEach(cell => {
+    cell.classList.remove(x_class);
+    cell.classList.remove(o_class);
+    cell.removeEventListener('click', handleClick)
+    cell.addEventListener('click', handleClick, {once: true})
+  });
+  setBoardHoverClass();
+  winningMessageElement.classList.remove('show');
+}
+
+function resetGame() {
   circleTurn = false;
   cellElements.forEach(cell => {
     cell.classList.remove(x_class);
